@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>AR POC</title>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="model-viewer-poc.js"></script>
+    <script>
+        var cameraView;
+        var constraints = {
+            audio: false,
+            video: {
+                facingMode: "environment",
+            }
+        };
+
+        // Access the device camera and stream to cameraView
+        function cameraStart() {
+            cameraView = document.querySelector("#webcam");
+            navigator.mediaDevices
+                .getUserMedia(constraints)
+                .then(function(stream) {
+                cameraView.srcObject = stream;
+            })
+            .catch(function(error) {
+                console.error("Oops. Something is broken.", error);
+            });
+        }
+
+        // Start the video stream when the window loads
+        window.addEventListener("load", cameraStart, false);
+    </script>
+    <style>   
+        #webcam {
+            opacity:1;
+            position: fixed;
+            background-size: 100% 100%;
+            top: 0; left: 0; 
+            min-width: 100%; min-height: 100%;
+            width: auto; height: auto;
+        }
+    </style>
+  </head>
+
+  <body style="margin: 0; overflow: hidden;">
+    <video id="webcam" autoplay playsinline></video>
+    <a-scene model-viewer="gltfModel: https://content.hmxmedia.com/xps-13-9320-laptop-gp-AR/gltf/xps-13-9320-laptop-gp-AR.glb" vr-mode-ui="enabled: false">
+        <!-- <a-entity id="model" position="0 1.4 -0.5" look-controls gltf-model="https://content.hmxmedia.com/xps-13-9320-laptop-gp-AR/gltf/xps-13-9320-laptop-gp-AR.glb" animation-mixer></a-entity> -->
+    </a-scene>
+  </body>
+</html>
